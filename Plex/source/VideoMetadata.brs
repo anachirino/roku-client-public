@@ -68,18 +68,13 @@ Sub setVideoBasics(video, container, item)
 
     if container.ViewGroup = "episode" OR item@type = "episode" then
         episodeStr = invalid
-        seasonStr = invalid
         if item@grandparentTitle <> invalid then
             video.ShortDescriptionLine1 = item@grandparentTitle + ": " + video.ShortDescriptionLine1
         end if
         if item@index <> invalid then
             video.EpisodeNumber = item@index
             episode = "Episode " + item@index
-            if val(item@index) >= 10 then
-                episodeStr = "E" + item@index
-            else
-                episodeStr = "E0" + item@index
-            end if
+            episodeStr = "Ep: " + item@index
         else
             video.EpisodeNumber = 0
             episode = "Episode ??"
@@ -87,12 +82,6 @@ Sub setVideoBasics(video, container, item)
         parentIndex = firstOf(item@parentIndex, container.xml@parentIndex)
         if parentIndex <> invalid then
             video.ShortDescriptionLine2 = "Season " + parentIndex + " - " + episode
-
-            if val(parentIndex) >= 10 then
-                seasonStr = "S" + parentIndex
-            else
-                seasonStr = "S0" + parentIndex
-            end if
         else
             video.ShortDescriptionLine2 = episode
         end if
@@ -100,8 +89,8 @@ Sub setVideoBasics(video, container, item)
             video.ShortDescriptionLine2 = video.ShortDescriptionLine2 + " - " + video.ReleaseDate
         end if
 
-        if episodeStr <> invalid AND seasonStr <> invalid then
-            video.EpisodeStr = seasonStr + episodeStr
+        if episodeStr <> invalid then
+            video.EpisodeStr = episodeStr
             video.OrigReleaseDate = video.ReleaseDate
             video.ReleaseDate = video.EpisodeStr
             video.TitleSeason = video.Title + " - " + video.EpisodeStr
