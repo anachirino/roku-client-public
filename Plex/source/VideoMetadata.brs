@@ -118,7 +118,12 @@ Sub setVideoBasics(video, container, item)
         end if
     end if
 
-    video.Rating = item@contentRating
+    if item@contentRating <> invalid 
+        video.Rating = item@contentRating
+    else
+        video.Rating = "NR"
+    end if
+
     rating = item@rating
     if rating <> invalid then
         video.StarRating = int(val(rating)*10)
